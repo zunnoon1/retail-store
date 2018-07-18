@@ -7,13 +7,14 @@ import com.store.retail.dto.BillItem;
 import com.store.retail.dto.Customer;
 import com.store.retail.dto.Item;
 
-public class BilllService {
+public class BillServiceImpl implements BillService {
 
 	private static final Double EMPLOYEE_DISCOUNT = 30d;
 	private static final Double AFFILIATE_DISCOUNT = 10d;
 	private static final Double OLDER_CUSTOMER_DISCOUNT = 5d;
 	private static final Double HUNDRED_FIGURE_DISCOUNT = 5d;
 	
+	@Override
 	public void calculateNetPayableAmount(Bill bill) {
 		
 		

@@ -11,7 +11,8 @@ import com.store.retail.dto.Bill;
 import com.store.retail.dto.BillItem;
 import com.store.retail.dto.Customer;
 import com.store.retail.dto.Item;
-import com.store.retail.service.BilllService;
+import com.store.retail.service.BillService;
+import com.store.retail.service.BillServiceImpl;
 
 /**
  * Unit test for simple App.
@@ -19,10 +20,10 @@ import com.store.retail.service.BilllService;
 public class AppTest 
 {
    
-	BilllService s = null;
+	BillService s = null;
     @Before
     public void setup() {
-        s = new BilllService();
+        s = new BillServiceImpl();
     }
     
     @Test

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BilllService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">retail-store</a> &gt; <a href="index.source.html" class="el_package">com.store.retail.service</a> &gt; <span class="el_source">BilllService.java</span></div><h1>BilllService.java</h1><pre class="source lang-java linenums">package com.store.retail.service;
+
+import java.util.List;
+
+import com.store.retail.dto.Bill;
+import com.store.retail.dto.BillItem;
+import com.store.retail.dto.Customer;
+import com.store.retail.dto.Item;
+
+<span class="fc" id="L10">public class BilllService {</span>
+
+<span class="fc" id="L12">	private static final Double EMPLOYEE_DISCOUNT = 30d;</span>
+<span class="fc" id="L13">	private static final Double AFFILIATE_DISCOUNT = 10d;</span>
+<span class="fc" id="L14">	private static final Double OLDER_CUSTOMER_DISCOUNT = 5d;</span>
+<span class="fc" id="L15">	private static final Double HUNDRED_FIGURE_DISCOUNT = 5d;</span>
+	
+	public void calculateNetPayableAmount(Bill bill) {
+		
+		
+<span class="fc" id="L20">		Customer customer = bill.getCustomer();</span>
+		
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		if(isEmployee(customer)) {</span>
+<span class="fc" id="L23">			 getBillDiscount(bill, EMPLOYEE_DISCOUNT);</span>
+		
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		} else if (isCustomerAffiliate(customer)) {</span>
+<span class="fc" id="L26">			  getBillDiscount(bill, AFFILIATE_DISCOUNT);</span>
+		
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		} else if(isTwoYearsOlderCustomer(customer)) {</span>
+<span class="fc" id="L29">			 getBillDiscount(bill, OLDER_CUSTOMER_DISCOUNT);</span>
+		} else {
+<span class="fc" id="L31">			 getBillDiscount(bill, 0d);</span>
+		}
+<span class="fc" id="L33">	}</span>
+
+	private boolean isTwoYearsOlderCustomer(Customer customer) {
+		
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">		if (customer == null) {</span>
+<span class="nc" id="L38">			return false;</span>
+		}
+
+<span class="pc bpc" id="L41" title="1 of 4 branches missed.">		if (customer.getCustomerId() &gt; 19 &amp;&amp; customer.getCustomerId() &lt; 30 ) {</span>
+<span class="fc" id="L42">			return true;</span>
+		}
+<span class="fc" id="L44">		return false;</span>
+	}
+
+	private boolean isCustomerAffiliate(Customer customer) {
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">		if (customer == null) {</span>
+<span class="nc" id="L49">			return false;</span>
+		}
+
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">		if (customer.getCustomerId() &gt; 9 &amp;&amp; customer.getCustomerId() &lt; 20 ) {</span>
+<span class="fc" id="L53">			return true;</span>
+		}
+<span class="fc" id="L55">		return false;</span>
+	}
+	
+
+	private boolean isEmployee(Customer customer) {
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if(customer == null) {</span>
+<span class="nc" id="L61">			return false;</span>
+		} 
+		
+<span class="pc bpc" id="L64" title="1 of 4 branches missed.">		if(customer.getCustomerId() &gt; 0  &amp;&amp; customer.getCustomerId() &lt; 10) {</span>
+<span class="fc" id="L65">			return true;</span>
+		}
+<span class="fc" id="L67">		return false;</span>
+	}
+
+	private void getBillDiscount(Bill bill, Double percentageDiscountValue) {
+		
+<span class="fc" id="L72">		List&lt;BillItem&gt; items = bill.getItems();</span>
+<span class="fc" id="L73">		double actualAmount = 0d;</span>
+<span class="fc" id="L74">		double totalDiscount = 0d;</span>
+		
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		for (BillItem item : items) {</span>
+
+<span class="fc" id="L78">			actualAmount += item.getItem().getPrice();</span>
+<span class="fc" id="L79">			totalDiscount += getDiscountOnItem(item.getItem(), percentageDiscountValue);</span>
+
+<span class="fc" id="L81">		}		</span>
+		
+		// calculating on every hundred discount		
+<span class="fc" id="L84">		 Double everyHundredDiscount = ((int) actualAmount/100 ) * HUNDRED_FIGURE_DISCOUNT;</span>
+
+				
+<span class="fc" id="L87">		totalDiscount += everyHundredDiscount;</span>
+		
+<span class="fc" id="L89">		bill.setActualAmount(String.valueOf(actualAmount));</span>
+		
+<span class="fc" id="L91">		bill.setNetPayableAmount(String.valueOf(actualAmount - totalDiscount));		</span>
+<span class="fc" id="L92">	}</span>
+
+	private Double getDiscountOnItem(Item item, Double percentageDiscountValue) {
+		
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		if(&quot;GROCERY&quot;.equals(item.getItemType())){</span>
+<span class="fc" id="L97">			return 0d;</span>
+		}		
+<span class="fc" id="L99">		return (item.getPrice() * percentageDiscountValue) / 100d;</span>
+		
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

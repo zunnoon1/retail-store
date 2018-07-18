@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+retail-store,com.store.retail.dto,BillItem,3,14,0,0,1,6,1,4,1,4
+retail-store,com.store.retail.dto,Customer,3,14,0,0,1,6,1,4,1,4
+retail-store,com.store.retail.dto,Bill,3,28,0,0,1,12,1,8,1,8
+retail-store,com.store.retail.dto,Item,3,21,0,0,1,9,1,6,1,6
+retail-store,com.store.retail.service,BilllService,6,177,6,22,3,41,6,16,0,8
+retail-store,com.store.retail,App,4,0,0,0,2,0,2,0,2,0
